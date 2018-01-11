@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
 from datetime import datetime, timedelta
+import sys
 
 def parseDate(x):
 	return datetime.strptime(x, '%A, %B %d, %Y')
@@ -145,6 +146,7 @@ for ticker in tickers:
 			
 			#print([p for p in local_df[local_df.Date==parseDate3(currentDate)].loc[:,["Sale Price"]].loc[:,"Sale Price"]])
 			print(key)
+			sys.stdout.flush()
 			total_price = 0
 			for p in local_price:
 				p = p.replace("$","").replace(",","")
