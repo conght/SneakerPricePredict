@@ -144,7 +144,7 @@ for ticker in tickers:
 				local_price = [p for p in local_df[local_df.Date==parseDate3(currentDate)].loc[:,["Sale Price"]].loc[:,"Sale Price"]] 
 			
 			#print([p for p in local_df[local_df.Date==parseDate3(currentDate)].loc[:,["Sale Price"]].loc[:,"Sale Price"]])
-			#print(currentDate)
+			print(key)
 			total_price = 0
 			for p in local_price:
 				p = p.replace("$","").replace(",","")
