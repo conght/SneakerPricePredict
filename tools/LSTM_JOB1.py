@@ -96,7 +96,7 @@ def predict_sequence_full(model, data, window_size):  #data X_test
 
 def predict_sequences_multiple(model, data, window_size, prediction_len):  #window_size = seq_len
     prediction_seqs = []
-    for i in range(len(data)/prediction_len):
+    for i in range(len(data)//prediction_len):
         curr_frame = data[i*prediction_len]
         predicted = []
         for j in range(prediction_len):
