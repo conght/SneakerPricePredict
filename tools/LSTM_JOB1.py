@@ -16,7 +16,7 @@ warnings.filterwarnings("ignore")
 
 def load_data(filename, seq_len, normalise_window):
     f = open(filename).read()
-    data = f.split('\r\n')
+    data = f.split('\n')
 
     print('data len:',len(data))
     print('sequence len:',seq_len)
