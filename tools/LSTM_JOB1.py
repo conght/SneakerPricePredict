@@ -87,7 +87,7 @@ def predict_point_by_point(model, data):
 def predict_sequence_full(model, data, window_size):  #data X_test
     curr_frame = data[0]  #(50L,1L)
     predicted = []
-    for i in xrange(len(data)):
+    for i in range(len(data)):
         #x = np.array([[[1],[2],[3]], [[4],[5],[6]]])  x.shape (2, 3, 1) x[0,0] = array([1])  x[:,np.newaxis,:,:].shape  (2, 1, 3, 1)
         predicted.append(model.predict(curr_frame[newaxis,:,:])[0,0])  #np.array(curr_frame[newaxis,:,:]).shape (1L,50L,1L)
         curr_frame = curr_frame[1:]
@@ -96,10 +96,10 @@ def predict_sequence_full(model, data, window_size):  #data X_test
 
 def predict_sequences_multiple(model, data, window_size, prediction_len):  #window_size = seq_len
     prediction_seqs = []
-    for i in xrange(len(data)/prediction_len):
+    for i in range(len(data)/prediction_len):
         curr_frame = data[i*prediction_len]
         predicted = []
-        for j in xrange(prediction_len):
+        for j in range(prediction_len):
             predicted.append(model.predict(curr_frame[newaxis,:,:])[0,0])
             curr_frame = curr_frame[1:]
             curr_frame = np.insert(curr_frame, [window_size-1], predicted[-1], axis=0)
@@ -121,7 +121,7 @@ def plot_results_multiple(predicted_data, true_data, prediction_len):
     ax.plot(true_data, label='True Data')
     #Pad the list of predictions to shift it in the graph to it's correct start
     for i, data in enumerate(predicted_data):
-        padding = [None for p in xrange(i * prediction_len)]
+        padding = [None for p in range(i * prediction_len)]
         plt.plot(padding + data, label='Prediction')
         plt.legend()
     plt.show()
