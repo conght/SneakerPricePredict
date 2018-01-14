@@ -129,8 +129,8 @@ def plot_results_multiple(predicted_data, true_data, prediction_len):
 
 if __name__=='__main__':
     global_start_time = time.time()
-    epochs  = 1
-    seq_len = 8
+    epochs  = 100
+    seq_len = 7
 
     print('> Loading data... ')
 
@@ -145,9 +145,9 @@ if __name__=='__main__':
 
     model = build_model([1, 50, 100, 1])
 
-    model.fit(X_train,y_train,batch_size=512,nb_epoch=epochs,validation_split=0.05)
+    model.fit(X_train,y_train,batch_size=16,nb_epoch=epochs,validation_split=0.05)
 
-    multiple_predictions = predict_sequences_multiple(model, X_test, seq_len, prediction_len=50)
+    multiple_predictions = predict_sequences_multiple(model, X_test, seq_len, prediction_len=1)
     print('multiple_predictions shape:',np.array(multiple_predictions).shape)   #(8L,50L)
 
     full_predictions = predict_sequence_full(model, X_test, seq_len)
@@ -158,6 +158,6 @@ if __name__=='__main__':
 
     print('Training duration (s) : ', time.time() - global_start_time)
 
-    plot_results_multiple(multiple_predictions, y_test, 50)
-    plot_results(full_predictions,y_test,'full_predictions')
+    #plot_results_multiple(multiple_predictions, y_test, 50)
+    #plot_results(full_predictions,y_test,'full_predictions')
     plot_results(point_by_point_predictions,y_test,'point_by_point_predictions')
