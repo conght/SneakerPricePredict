@@ -184,5 +184,25 @@ def extractDateSet(startLine=0, endLine=0, inputFile="price", outFile="price.csv
 			#writer.writerows(arr[1])
 			writer.writelines(arr[1]+"\r\n")
 
-extractDateSet(endLine=156, outFile="YZY350V2-RED-10-price.csv")
+def extractDateSet2(startLine=0, endLine=0, inputFile="price", outFile="price.csv"):
+	input_file = open("price")
+	index = 0
+	priceMap = {}
+	writer = open(outFile, "w")
+	for line in input_file:
+		index = index + 1
+		if index >= startLine and index <= endLine:
+			line = line.replace("\r","").replace("\n","")
+			arr = line.split(" ")
+			date = arr[0].split("||")[2]
+			priceMap[date] = priceMap.get(date, 0) + int(arr[1]);
+			#row = []
+			#row.append(arr[1])
+			#writer.writerows(arr[1])
+			#writer.writelines(arr[1]+"\r\n")
+	for i, v in priceMap.items():
+		#print(i+" "+str(v//20))
+		writer.writelines(str(v//20)+"\r\n")
+
+extractDateSet2(endLine=3120, outFile="YZY350V2-RED-price.csv")
 

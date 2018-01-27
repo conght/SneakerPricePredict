@@ -158,7 +158,7 @@ if __name__=='__main__':
 
     print('> Loading data... ')
 
-    X_train, y_train, X_test, y_test = load_data('YZY350V2-RED-10-price.csv', seq_len, True)
+    X_train, y_train, X_test, y_test = load_data('YZY350V2-RED-price.csv', seq_len, True)
 
     print('X_train shape:',X_train.shape)  #(3709L, 50L, 1L)
     print('y_train shape:',y_train.shape)  #(3709L,)
