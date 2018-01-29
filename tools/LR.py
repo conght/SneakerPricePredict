@@ -5,6 +5,7 @@ np.random.seed(1337)
 from keras.models import Sequential
 from keras.layers import Dense
 import matplotlib.pyplot as plt
+from keras.callbacks import ModelCheckpoint
 
 def load_data(filename, seq_len, normalise_window):
     f = open(filename).read()
@@ -16,7 +17,7 @@ def load_data(filename, seq_len, normalise_window):
     sequence_length = seq_len + 1
     result = []
     for item in data:
-        result.append(data.split(",")[1:])  #得到长度为seq_len+1的向量，最后一个作为label
+        result.append(item.split(",")[1:])  #得到长度为seq_len+1的向量，最后一个作为label
 
     print('result len:',len(result))
     print('result shape:',np.array(result).shape)
@@ -39,8 +40,8 @@ def load_data(filename, seq_len, normalise_window):
     x_test = result[row:, :-1]
     y_test = result[row:, -1]
 
-    x_train = np.reshape(x_train, (x_train.shape[0], x_train.shape[1], 1))
-    x_test = np.reshape(x_test, (x_test.shape[0], x_test.shape[1], 1))
+    #x_train = np.reshape(x_train, (x_train.shape[0], x_train.shape[1], 1))
+    #x_test = np.reshape(x_test, (x_test.shape[0], x_test.shape[1], 1))
 
     return [x_train, y_train, x_test, y_test]
 
@@ -48,10 +49,11 @@ def normalise_windows(window_data):
     normalised_data = []
     for window in window_data:   #window shape (sequence_length L ,)  即(51L,)
         #normalised_window = [((float(p) / float(window[0])) - 1) for p in window]
+        normalised_window = []
         normalised_window.append(float(window[0])/float(41))
-        normalised_window.append(float(window[1])/float(3210))
+        normalised_window.append(float(window[1])/float(1000))
         normalised_window.append(float(window[2])/float(28))
-        normalised_window.append(float(window[3])/float(3210))
+        normalised_window.append(float(window[3])/float(1000))
         normalised_data.append(normalised_window)
     return normalised_data
 
@@ -66,31 +68,41 @@ def normalise_windows(window_data):
 #X_train, Y_train = X[:160], Y[:160]     # 前160组数据为训练数据集
 #X_test, Y_test = X[160:], Y[160:]      #后40组数据为测试数据集
 
-X_train, Y_train, X_test, Y_test = load_data(filename='price.csv',seq_len=0,normalise_window=true)
+X_train, Y_train, X_test, Y_test = load_data(filename='price.csv',seq_len=0,normalise_window=True)
 
+#print(X_train.shape)
 # 构建神经网络模型
 model = Sequential()
-model.add(Dense(input_dim=3, units=1))
+model.add(Dense(1, input_shape=(3,)))
 
 # 选定loss函数和优化器
 model.compile(loss='mse', optimizer='sgd')
 
+save = ModelCheckpoint("lr.{epoch:01d}-{val_loss:.2f}.hdf5", save_weights_only=True,
+                               save_best_only=True, monitor='val_loss')
+
+model.fit(X_train, Y_train,
+          batch_size=16,
+          nb_epoch=100,
+          callbacks=[save],
+          validation_data=(X_test, Y_test))
+
 # 训练过程
-print('Training -----------')
-for step in range(501):
-    cost = model.train_on_batch(X_train, Y_train)
-    if step % 50 == 0:
-        print("After %d trainings, the cost: %f" % (step, cost))
+# print('Training -----------')
+# for step in range(501):
+#     cost = model.train_on_batch(X_train, Y_train)
+#     if step % 50 == 0:
+#         print("After %d trainings, the cost: %f" % (step, cost))
 
 # 测试过程
-print('\nTesting ------------')
-cost = model.evaluate(X_test, Y_test, batch_size=40)
-print('test cost:', cost)
-W, b = model.layers[0].get_weights()
-print('Weights=', W, '\nbiases=', b)
+# print('\nTesting ------------')
+# cost = model.evaluate(X_test, Y_test, batch_size=4)
+# print('test cost:', cost)
+# W, b = model.layers[0].get_weights()
+# print('Weights=', W, '\nbiases=', b)
 
 # 将训练结果绘出
-Y_pred = model.predict(X_test)
-plt.scatter(X_test, Y_test)
-plt.plot(X_test, Y_pred)
-plt.show()
+#Y_pred = model.predict(X_test)
+#plt.scatter(X_test, Y_test)
+#plt.plot(X_test, Y_pred)
+#plt.show()
