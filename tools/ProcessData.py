@@ -204,5 +204,70 @@ def extractDateSet2(startLine=0, endLine=0, inputFile="price", outFile="price.cs
 		#print(i+" "+str(v//20))
 		writer.writelines(str(v//20)+"\r\n")
 
-extractDateSet2(endLine=3120, outFile="YZY350V2-RED-price.csv")
+def extractDateSet3(startLine=0, endLine=0, inputFile="price", outFile="price.csv"):
+	input_file = open("price")
+	index = 0
+	priceMap = {}
+	writer = open(outFile, "w")
+	for line in input_file:
+		index = index + 1
+		if index >= startLine and index <= endLine:
+			line = line.replace("\r","").replace("\n","")
+			arr = line.split(" ")
+			series = arr[0].split("||")[0]
+			priceList = priceMap.get(series, [])
+			priceList.append(int(arr[1]));
+			priceMap[series] = priceList
+			#row = []
+			#row.append(arr[1])
+			#writer.writerows(arr[1])
+			#writer.writelines(arr[1]+"\r\n")
+	priceMap2 = {}
+	for i, v in priceMap.items():
+		#print(i+" "+str(v))
+		totalPrice = 0
+		for item in v:
+			totalPrice = totalPrice + item
+		#writer.writelines(i+","+str(totalPrice//len(v))+"\r\n")
+		priceMap2[i] = totalPrice//len(v)
+
+	priceMap3 = {}
+	for i, v in priceMap2.items():
+
+		series = i.split("-")[0]
+		priceList = priceMap3.get(series, [])
+		priceList.append(v);
+		priceMap3[series] = priceList
+
+	priceMap4 = {}
+	for i, v in priceMap3.items():
+		#print(i+" "+str(v))
+		totalPrice = 0
+		for item in v:
+			totalPrice = totalPrice + item
+		#writer.writelines(i+","+str(totalPrice//len(v))+"\r\n")
+		priceMap4[i] = totalPrice//len(v)
+
+	#for i, v in priceMap4.items():
+	#	print(i+" "+str(v))
+
+	colordict_file = open("colors_dict")
+	colorDict = {}
+	for line in colordict_file:
+		line = line.replace("\r","").replace("\n","")
+		arr = line.split(" ")
+		colorDict[arr[0]] = arr[1]
+	colors_file = open("colors")
+	series2color = {}
+	for line in colors_file:
+		line = line.replace("\r","").replace("\n","")
+		arr = line.split('\t')
+		print(line)
+		series2color[arr[0]] = colorDict[arr[1]]
+
+	for i, v in priceMap2.items():
+		writer.writelines(i+","+str(v)+","+str(priceMap4[i.split("-")[0]])+","+series2color[i]+"\r\n")
+
+extractDateSet3(endLine=97500)
+
 
