@@ -2,4 +2,4 @@
 
 [Readme in English](README_EN.md)
 
-使用keras框架，扒取国外 Sneakers 网站的球鞋价格历史数据，训练lstm模型，预测球鞋价格走势。
+使用 keras 框架，扒取国外 Sneakers 网站的球鞋价格历史数据，训练 lstm 模型，预测球鞋价格走势。
