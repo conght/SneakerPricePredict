@@ -1,5 +1,6 @@
-# 球鞋价格预测
+# Sneakers Price Predict
 
-[Readme in English](README_EN.md)
+[README in Chinese](README_ZH.md)
 
-使用 keras 框架，扒取国外 Sneakers 网站的球鞋价格历史数据，训练 lstm 模型，预测球鞋价格走势。
+This project used ML framework —— keras, to train a lstm model which could predict the prices of sneakers.
+The source data is the historical data of sneakers prices that picked up from foreign Sneakers websites.
